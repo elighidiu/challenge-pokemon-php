@@ -15,6 +15,14 @@
             $name = strtolower($_GET['name']); // strtoupper will convert text to lowercase
             $api_url = "https://pokeapi.co/api/v2/pokemon/$name";
             $api_species = "https://pokeapi.co/api/v2/pokemon-species/$name"; 
+            
+            $headers = get_headers($api_url, 1); //get_headers() function can fetch headers sent by the server in response to an HTTP request.
+    
+            if ($headers[0] !=='HTTP/1.1 200 OK') {
+                echo "<p>Enter a valid search</p>";
+                $api_url = "https://pokeapi.co/api/v2/pokemon/1";
+                $api_species = "https://pokeapi.co/api/v2/pokemon-species/1";
+            }
        } else {
             $api_url = "https://pokeapi.co/api/v2/pokemon/1";
             $api_species = "https://pokeapi.co/api/v2/pokemon-species/1";
@@ -33,7 +41,7 @@
     ?>
 
     <h1>Pokedex</h1> 
-
+ 
     <div class="main">
         <div class="left">
             <form name="form" action="index.php" method="get">  
@@ -60,9 +68,6 @@
         </div>
         <div class="right">
             <div class="contentRight">
-                <!-- <div class="container">   
-                    <p>Evolves from:</p>
-                </div> -->
                 <?php
                     if(($response_data_species->evolves_from_species)!==NULL){
 
