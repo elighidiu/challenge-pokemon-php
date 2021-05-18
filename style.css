@@ -1,0 +1,86 @@
+
+body {
+    font-family: 'Press Start 2P', cursive;
+    background-image: url('img/game.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+h1{
+    margin:50 auto;
+    width: 300px;
+}
+
+h3,  p{
+    text-align: center;
+}
+
+div.main {
+    width: 800px;
+    margin:50 auto;
+    /* background-color: #fb1368; */
+    
+    display: flex;
+ 
+    
+}
+
+div.left{
+    width: 55%;
+    background-color: #fb1368;
+    border-radius:10px 0px 0px 10px;
+    padding: 35px 35px;
+}
+div.contentLeft {
+    background-color:#da99d3;
+    margin: 40 0 40 0;
+    padding: 15px;
+    border-radius: 10px;
+    border:5px solid #585858;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   
+}
+
+div.right {
+    background-color: #dd155f;
+    width: 45%;
+    border-radius:0px 10px 10px 0px;
+  
+}
+
+div.contentRight {
+    background-color:#7b5c91;
+    margin: 110 20 40 20;
+    padding: 15px;
+    border-radius: 10px;
+    border:5px solid #dedede;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+   
+}
+
+.button, .input {
+    padding: 10px 25px;
+    border-radius: 10px;
+    border:2px solid #585858;
+}
+
+input, select, textarea, button {
+    font-family:inherit;
+    font-size: 12px;
+}
+
+.input {
+    width: 58%;
+}
+
+.button{
+    width: 38%;
+}
+input:focus{
+    outline: none;
+}
