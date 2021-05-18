@@ -4,11 +4,13 @@ body {
     background-image: url('img/game.png');
     background-repeat: no-repeat;
     background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
 h1{
     margin:50 auto;
-    width: 300px;
 }
 
 h3,  p{
@@ -16,10 +18,7 @@ h3,  p{
 }
 
 div.main {
-    width: 800px;
-    margin:50 auto;
-    /* background-color: #fb1368; */
-    
+    margin:50 auto; 
     display: flex;
  
     
@@ -84,3 +83,23 @@ input, select, textarea, button {
 input:focus{
     outline: none;
 }
+
+@media screen and (max-width: 900px) {
+    div.main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    div.left {
+        width: 50%;
+        border-radius: 10px 10px 0px 0px;
+    }
+    div.right {
+        width: 50%;
+        border-radius: 0px 0px 10px 10px;
+        padding: 0px 35px 0px 35px;
+    }
+    .input, .button{
+        width: 100%;
+    }
+  }
