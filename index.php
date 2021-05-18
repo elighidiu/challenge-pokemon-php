@@ -18,7 +18,7 @@
             
             $headers = get_headers($api_url, 1); //get_headers() function can fetch headers sent by the server in response to an HTTP request.
     
-            if ($headers[0] !=='HTTP/1.1 200 OK') {
+            if ($headers[0] !=='HTTP/1.1 200 OK' || ($_GET['name'])==NULL) { //checking if HTTP response is diffrent than OK or if search is NULL then display default info and message to perform a valid search
                 echo "<p>Enter a valid search</p>";
                 $api_url = "https://pokeapi.co/api/v2/pokemon/1";
                 $api_species = "https://pokeapi.co/api/v2/pokemon-species/1";
@@ -50,7 +50,7 @@
             </form> 
             <div class="contentLeft">
                 <div class="container">
-                    <?php echo "<h3>".$poke_name." (#".$response_data->id.")</h3>"; ?>
+                    <?php echo "<h3>$poke_name (# $response_data->id )</h3>"; ?>
                 </div>
                 <div class="container">
                     <?php echo "<img src='".$poke_img."'>"; ?>
@@ -58,9 +58,17 @@
                 <div class="container">
                     <ul>
                         <p>Moves</p>
-                        <?php for ($i=0; $i<4; $i++){
-                            echo "<li>".$poke_move[$i]->move->name."</li>"; //displays the moves in a list
-                            }  
+                        <?php 
+                        if(sizeof($poke_move)>=4){ //if there are more than 4 moves display the first 4 moves, else display all (with the foreach method)
+                            for ($i=0; $i<4; $i++){
+                                echo "<li>".$poke_move[$i]->move->name."</li>"; //displays the moves in a list
+                            } 
+                        } else {
+                            foreach($poke_move as $value){
+                                echo $value->move->name;
+                                }
+                            }
+                         
                         ?>
                     </ul>
                 </div>
