@@ -1,15 +1,14 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokemon challange</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-</head>
-<body>
-    <?php
+
+<!-- place logic on top 
+next prev buttons
+prev evolution clickable
+-->
+
+<?php 
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+
         //isset function — will determine if a variable is declared and is different than null
        if(isset($_GET['name'])){ 
             $name = strtolower($_GET['name']); // strtoupper will convert text to lowercase
@@ -18,7 +17,7 @@
             
             $headers = get_headers($api_url, 1); //get_headers() function can fetch headers sent by the server in response to an HTTP request.
     
-            if ($headers[0] !=='HTTP/1.1 200 OK' || ($_GET['name'])==NULL) { //checking if HTTP response is diffrent than OK or if search is NULL then display default info and message to perform a valid search
+            if ($headers[0] !=='HTTP/1.1 200 OK' || ($_GET['name'])==NULL) { //checking if HTTP response is diffrrent than OK or if search is NULL then display default info and message to perform a valid search
                 echo "<p>Enter a valid search</p>";
                 $api_url = "https://pokeapi.co/api/v2/pokemon/1";
                 $api_species = "https://pokeapi.co/api/v2/pokemon-species/1";
@@ -37,8 +36,31 @@
         $poke_img = $response_data->sprites->front_default;
         $poke_name = ucfirst($response_data->forms[0]->name); //ucfirst will write the first letter in capital
         $poke_move = $response_data->moves;
-   
+        $species = $response_data_species->evolves_from_species;
+
+        if(($species)!==NULL){
+            $previous_poke = $response_data_species->evolves_from_species->name; //get the name of the previous species
+            $api_previous = "https://pokeapi.co/api/v2/pokemon/$previous_poke"; //access data for the new pokemon
+            $json_data_previous = file_get_contents($api_previous); // Read JSON file
+            $response_data_previous = json_decode($json_data_previous); // Decode JSON data into PHP array
+
+            $previous_poke_name = ucfirst($response_data_previous->forms[0]->name);
+            $previous_poke_id = $response_data_previous->id;
+            $previous_poke_img = $response_data_previous->sprites->front_default;
+        }
     ?>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon challange</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
 
     <h1>Pokedex</h1> 
  
@@ -77,24 +99,13 @@
         <div class="right">
             <div class="contentRight">
                 <?php
-                    if(($response_data_species->evolves_from_species)!==NULL){
-
-                        $previous_poke = $response_data_species->evolves_from_species->name; //get the name of the previous species
-                        $api_previous = "https://pokeapi.co/api/v2/pokemon/$previous_poke"; //access data for the new pokemon
-                        $json_data_previous = file_get_contents($api_previous); // Read JSON file
-                        $response_data_previous = json_decode($json_data_previous); // Decode JSON data into PHP array
-
-                        $previous_poke_name = ucfirst($response_data_previous->forms[0]->name);
-                        $previous_poke_id = $response_data_previous->id;
-                        $previous_poke_img = $response_data_previous->sprites->front_default;
-                        
-                        echo "<div class='container'><p>Evolves from: </p><h3>".$previous_poke_name." (#".$response_data_previous->id.")</h3></div>";
-                        echo "<div class='container'><img src='".$previous_poke_img."'></div>";       
-                    } else {
-                        echo "<p>There is no previous evolution</p>";
-                    }
+                        if(($species)!==NULL){
+                            echo "<div class='container'><p>Evolves from: </p><h3>".$previous_poke_name." (#".$response_data_previous->id.")</h3></div>";
+                            echo "<div class='container'><img src='".$previous_poke_img."'></div>";       
+                        } else {
+                            echo "<p>There is no previous evolution</p>";
+                            }
                 ?>
-                
             </div>
         </div>
 
