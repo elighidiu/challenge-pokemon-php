@@ -8,10 +8,10 @@ prev evolution clickable
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
-
-        //isset function — will determine if a variable is declared and is different than null
-       if(isset($_GET['name'])){ 
-            $name = strtolower($_GET['name']); // strtoupper will convert text to lowercase
+        
+    //isset function — will determine if a variable is declared and is different than null
+       if(isset($_GET['name'])){
+            $name = strtolower($_GET['name']); // strtoupper will convert text to lowercase            
             $api_url = "https://pokeapi.co/api/v2/pokemon/$name";
             $api_species = "https://pokeapi.co/api/v2/pokemon-species/$name"; 
             
@@ -37,6 +37,7 @@ prev evolution clickable
         $poke_name = ucfirst($response_data->forms[0]->name); //ucfirst will write the first letter in capital
         $poke_move = $response_data->moves;
         $species = $response_data_species->evolves_from_species;
+   
 
         if(($species)!==NULL){
             $previous_poke = $response_data_species->evolves_from_species->name; //get the name of the previous species
@@ -48,6 +49,14 @@ prev evolution clickable
             $previous_poke_id = $response_data_previous->id;
             $previous_poke_img = $response_data_previous->sprites->front_default;
         }
+
+        function nextPoke($poke){
+            return $poke->id + 1;
+        }
+        function prevPoke($poke){
+                return $poke->id - 1;
+        }
+
     ?>
 
 <html lang="en">
@@ -94,6 +103,16 @@ prev evolution clickable
                         ?>
                     </ul>
                 </div>
+            </div>
+            <div class="prevNext">
+            <form  method="get">
+            <input type="hidden" name="name" value="<?php echo nextPoke($response_data);?>" required />
+            <input class="button" type="submit" name="submit" value="Next" />
+        </form>
+        <form  method="get">
+            <input type="hidden" name="name" value="<?php echo prevPoke($response_data);?>" required />
+            <input class="button" type="submit" name="submit" value="Previous" />
+        </form>
             </div>
         </div>
         <div class="right">
